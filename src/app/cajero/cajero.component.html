@@ -1,0 +1,127 @@
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+/>
+
+<div class="container container-actions">
+  <div class="row row-container">
+    <form [formGroup]="formGroup">
+      <div class="row">
+        <div class="col text-center">
+          <button class="btn btn-outline-danger">
+            <i class="bi-arrow-clockwise"></i>
+          </button>
+        </div>
+        <label for="monto" style="color: green">{{ successMessage }}</label>
+        <div [innerHTML]="denominationsMessage" style="color: blue"></div>
+        <label for="monto" style="color: red">{{ errorMessage }}</label>
+        <label for="monto">{{ retiroMessage }}</label>
+        <input
+          type="text"
+          formControlName="monto"
+          class="text-center"
+          (input)="inputNumber()"
+        />
+      </div>
+      <div class="text-end" *ngIf="btnTerminar">
+        <button class="btn btn-dark" (click)="terminar()">TERMINAR</button>
+      </div>
+    </form>
+  </div>
+  <div class="row text-center row-container">
+    <div class="col col-container">
+      <button class="btn btn-outline-secondary number" (click)="addDigit('1')">
+        <i class="bi-1-square"></i>
+      </button>
+    </div>
+    <div class="col col-container">
+      <button class="btn btn-outline-secondary number" (click)="addDigit('2')">
+        <i class="bi-2-square"></i>
+      </button>
+    </div>
+    <div class="col col-container">
+      <button class="btn btn-outline-secondary number" (click)="addDigit('3')">
+        <i class="bi-3-square"></i>
+      </button>
+    </div>
+    <div class="col col-container">
+      <button
+        class="btn btn-danger btn-actions"
+        (click)="cancel()"
+        [disabled]="btnContinuar"
+      >
+        CANCELAR <i class="bi-x-lg"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="row text-center row-container">
+    <div class="col col-container">
+      <button class="btn btn-outline-secondary number" (click)="addDigit('4')">
+        <i class="bi-4-square"></i>
+      </button>
+    </div>
+    <div class="col col-container">
+      <button class="btn btn-outline-secondary number" (click)="addDigit('5')">
+        <i class="bi-5-square"></i>
+      </button>
+    </div>
+    <div class="col col-container">
+      <button class="btn btn-outline-secondary number" (click)="addDigit('6')">
+        <i class="bi-6-square"></i>
+      </button>
+    </div>
+    <div class="col col-container">
+      <button
+        class="btn btn-warning btn-actions"
+        (click)="deleteDigit()"
+        [disabled]="btnContinuar"
+      >
+        BORRAR <i class="bi-chevron-left"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="row text-center row-container">
+    <div class="col col-container">
+      <button class="btn btn-outline-secondary number" (click)="addDigit('7')">
+        <i class="bi-7-square"></i>
+      </button>
+    </div>
+    <div class="col col-container">
+      <button class="btn btn-outline-secondary number" (click)="addDigit('8')">
+        <i class="bi-8-square"></i>
+      </button>
+    </div>
+    <div class="col col-container">
+      <button class="btn btn-outline-secondary number" (click)="addDigit('9')">
+        <i class="bi-9-square"></i>
+      </button>
+    </div>
+    <div class="col col-container">
+      <button
+        class="btn btn-success btn-actions"
+        (click)="retirar()"
+        [disabled]="btnContinuar"
+      >
+        CONTINUAR <i class="bi-circle"></i>
+      </button>
+    </div>
+  </div>
+  <div class="row text-center row-container">
+    <div class="col col-container"></div>
+    <div class="col col-container">
+      <button class="btn btn-outline-secondary number" (click)="addDigit('0')">
+        <i class="bi-0-square"></i>
+      </button>
+    </div>
+    <div class="col col-container">
+      <button class="btn btn-outline-secondary number" (click)="addDigit('.')">
+        <i class="bi-dot"></i>
+      </button>
+    </div>
+    <div class="col col-container">
+      <button class="btn btn-success btn-actions btn-disable" disabled></button>
+    </div>
+  </div>
+</div>

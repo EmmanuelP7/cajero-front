@@ -1,0 +1,46 @@
+.container-actions {
+  border: solid rgba(55, 49, 49, 0.296);
+  max-width: 450px;
+  margin-top: 30px;
+  padding: 0%;
+}
+
+.row-container {
+  /* border: solid rgba(255, 21, 21, 0.256); */
+  margin: 0%;
+  padding: 0%;
+}
+.col-container {
+  border: solid rgba(41, 41, 41, 0.218);
+  margin: 0%;
+  padding: 0%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-disable {
+  background-color: transparent;
+  border: none;
+}
+.number {
+  padding: 0%;
+  font-size: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 48px;
+  border: none;
+}
+
+.btn-actions {
+  width: 150px;
+}
+label {
+  font-size: 1rem;
+}
+
+input {
+  font-size: 2rem;
+  border: none;
+}
