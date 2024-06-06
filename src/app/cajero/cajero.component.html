@@ -8,9 +8,10 @@
     <form [formGroup]="formGroup">
       <div class="row">
         <div class="col text-center">
-          <button class="btn btn-outline-danger">
+          <button class="btn btn-outline-danger" (click)="recargar()">
             <i class="bi-arrow-clockwise"></i>
           </button>
+          <label for=""> Monto disponible {{ montoDisponible }}</label>
         </div>
         <label for="monto" style="color: green">{{ successMessage }}</label>
         <div [innerHTML]="denominationsMessage" style="color: blue"></div>

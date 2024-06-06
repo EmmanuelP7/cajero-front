@@ -32,17 +32,17 @@ export class CajeroComponent
   validar(isNumber: string)
   {
     const numberRegex = /^[0-9]+(\.)?(0|5)?(0)?$/;
-    console.log("validando");
-    console.log(isNumber);
+    // console.log("validando");
+    // console.log(isNumber);
 
 
 
     if (numberRegex.test(isNumber))
     {
-      console.log("si es valido");
+      // console.log("si es valido");
 
       const tam = parseInt(isNumber || '0');
-      console.log(tam);
+      // console.log(tam);
 
 
       if (tam > 1 || (isNumber == '00' && isNumber.length > 1))
@@ -58,9 +58,9 @@ export class CajeroComponent
   addDigit(digit: string)
   {
     let tempMonto = this.formGroup.value.monto;
-    console.log("checando longitud");
-    console.log(tempMonto);
-    console.log(tempMonto?.length);
+    // console.log("checando longitud");
+    // console.log(tempMonto);
+    // console.log(tempMonto?.length);
     if (tempMonto?.length == 0 && digit == '.')
     {
       tempMonto = '0' + tempMonto;
@@ -82,7 +82,7 @@ export class CajeroComponent
 
   deleteDigit()
   {
-    console.log("borrando");
+    // console.log("borrando");
     this.formGroup.value.monto = this.formGroup.value.monto?.slice(0, -1);
     this.updateInput();
   }
@@ -96,22 +96,22 @@ export class CajeroComponent
 
   inputNumber()
   {
-    console.log("input text");
+    // console.log("input text");
     const ceros = /^(0)+$/;
 
-    console.log(this.formGroup.value.monto);
+    // console.log(this.formGroup.value.monto);
 
 
     if (!this.validar(this.formGroup.value.monto ?? ""))
     {
-      console.log("no cumple");
+      // console.log("no cumple");
 
       this.deleteDigit();
 
     }
     if (ceros.test(this.formGroup.value.monto ?? '0'))
     {
-      console.log("si cumple");
+      // console.log("si cumple");
 
       this.updateInput();
       this.formGroup.value.monto = '0';
@@ -164,19 +164,20 @@ export class CajeroComponent
   retirar()
   {
 
-    console.log("monto disponible:");
-    console.log(this.montoDisponible);
+    // console.log("monto disponible:");
+    // console.log(this.montoDisponible);
 
-    console.log("Monto a retirar");
-    console.log(this.formGroup.value.monto);
+    // console.log("Monto a retirar");
+    // console.log(this.formGroup.value.monto);
     const cantidadRetirar = Number(this.formGroup.value.monto);
 
 
 
-    if (this.montoDisponible > cantidadRetirar)
+    if (this.montoDisponible >= cantidadRetirar)
     {
       const mensaje = this.checarDenominaciones(cantidadRetirar);
 
+      this.montoDisponible = this.montoDisponible - cantidadRetirar;
 
       this.successMessage = "Retire su dinero por favor";
       this.retiroMessage = " ";
@@ -198,23 +199,23 @@ export class CajeroComponent
   checarDenominaciones(cantidaRetiro: number): string
   {
     const denominaciones = [];
-    console.log("comenzando a retirar");
-    console.log(cantidaRetiro);
+    // console.log("comenzando a retirar");
+    // console.log(cantidaRetiro);
 
     for (const denomicacion in this.dinero_inicial)
     {
       if (Object.prototype.hasOwnProperty.call(this.dinero_inicial, denomicacion))
       {
         const element = this.dinero_inicial[denomicacion];
-        console.log(element);
+        // console.log(element);
         let f = 0;
         while (cantidaRetiro >= element.denominacion && element.cantidad > 0)
         {
-          console.log(cantidaRetiro + "-" + element.denominacion);
+          // console.log(cantidaRetiro + "-" + element.denominacion);
           f++;
           element.cantidad = element.cantidad - 1;
           cantidaRetiro = cantidaRetiro - element.denominacion;
-          console.log(cantidaRetiro);
+          // console.log(cantidaRetiro);
         }
         const agregar =
         {
@@ -260,6 +261,11 @@ export class CajeroComponent
 
 
 
+  }
+
+  recargar()
+  {
+    window.location.reload();
   }
 
 }
