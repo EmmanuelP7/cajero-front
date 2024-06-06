@@ -14,6 +14,7 @@
           <label for=""> Monto disponible {{ montoDisponible }}</label>
         </div>
         <label for="monto" style="color: green">{{ successMessage }}</label>
+        <label *ngIf="btnContinuar">{{ numOperacion }}</label>
         <div [innerHTML]="denominationsMessage" style="color: blue"></div>
         <label for="monto" style="color: red">{{ errorMessage }}</label>
         <label for="monto">{{ retiroMessage }}</label>

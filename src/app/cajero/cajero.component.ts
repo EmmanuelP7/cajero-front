@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { post } from './utils/post';
 
 
 @Component({
@@ -21,6 +22,7 @@ export class CajeroComponent
   errorMessage = " ";
   successMessage = " ";
   denominationsMessage = " ";
+  numOperacion = "Numero de Operacion(folio): ";
 
   btnContinuar = false;
   btnTerminar = false;
@@ -126,6 +128,7 @@ export class CajeroComponent
 
     this.btnContinuar = false;
     this.btnTerminar = false;
+
     this.cancel();
 
 
@@ -137,6 +140,7 @@ export class CajeroComponent
     if (!this.btnContinuar)
     {
       this.successMessage = " ";
+      this.numOperacion = "Numero de Operacion(folio): ";
       this.retiroMessage = "Ingrese el monto a retirar:";
       this.denominationsMessage = " ";
       this.formGroup.patchValue({
@@ -161,7 +165,7 @@ export class CajeroComponent
   ];
 
   montoDisponible = 12550;
-  retirar()
+  async retirar()
   {
 
     // console.log("monto disponible:");
@@ -169,29 +173,38 @@ export class CajeroComponent
 
     // console.log("Monto a retirar");
     // console.log(this.formGroup.value.monto);
+
     const cantidadRetirar = Number(this.formGroup.value.monto);
 
 
 
-    if (this.montoDisponible >= cantidadRetirar)
-    {
-      const mensaje = this.checarDenominaciones(cantidadRetirar);
 
-      this.montoDisponible = this.montoDisponible - cantidadRetirar;
-
-      this.successMessage = "Retire su dinero por favor";
-      this.retiroMessage = " ";
-      this.denominationsMessage = mensaje;
-      this.btnContinuar = true;
-      this.btnTerminar = true;
-    }
-    else
+    if (cantidadRetirar != 0)
     {
-      this.errorMessage = "No hay dinero suficiente, ingrese un monto diferente";
-      setTimeout(() =>
+
+
+      if (this.montoDisponible >= cantidadRetirar)
       {
-        this.errorMessage = " ";
-      }, 2000);
+        const mensaje = this.checarDenominaciones(cantidadRetirar);
+
+        const datosBack = await post(mensaje);
+        this.montoDisponible = this.montoDisponible - cantidadRetirar;
+
+        this.numOperacion += String(datosBack.numeroOperacion);
+        this.successMessage = "Retire su dinero por favor";
+        this.retiroMessage = " ";
+        this.denominationsMessage = mensaje;
+        this.btnContinuar = true;
+        this.btnTerminar = true;
+      }
+      else
+      {
+        this.errorMessage = "No hay dinero suficiente, ingrese un monto diferente";
+        setTimeout(() =>
+        {
+          this.errorMessage = " ";
+        }, 2000);
+      }
     }
 
   }
