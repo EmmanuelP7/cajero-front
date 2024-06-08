@@ -18,6 +18,8 @@ export class CajeroComponent
     monto: ["0"],
     status: false
   });
+
+
   retiroMessage = "Ingrese el monto a retirar:";
   errorMessage = " ";
   successMessage = " ";
@@ -47,7 +49,7 @@ export class CajeroComponent
       // console.log(tam);
 
 
-      if (tam > 1 || (isNumber == '00' && isNumber.length > 1))
+      if (tam >= 1 || (isNumber == '00' && isNumber.length > 1))
       {
         this.formGroup.value.monto = this.formGroup.value.monto?.replace(/^0*/g, "");
       }
@@ -151,20 +153,21 @@ export class CajeroComponent
 
 
   dinero_inicial = [
-    { "denominacion": 1000, "cantidad": 2, "tipo": "billete" },
-    { "denominacion": 500, "cantidad": 5, "tipo": "billete" },
+    { "denominacion": 1000, "cantidad": 0, "tipo": "billete" },
+    { "denominacion": 500, "cantidad": 0, "tipo": "billete" },
     { "denominacion": 200, "cantidad": 10, "tipo": "billete" },
-    { "denominacion": 100, "cantidad": 20, "tipo": "billete" },
-    { "denominacion": 50, "cantidad": 30, "tipo": "billete" },
-    { "denominacion": 20, "cantidad": 40, "tipo": "billete" },
-    { "denominacion": 10, "cantidad": 50, "tipo": "moneda" },
-    { "denominacion": 5, "cantidad": 100, "tipo": "moneda" },
-    { "denominacion": 2, "cantidad": 200, "tipo": "moneda" },
-    { "denominacion": 1, "cantidad": 300, "tipo": "moneda" },
-    { "denominacion": 0.5, "cantidad": 100, "tipo": "moneda" }
+    { "denominacion": 100, "cantidad": 0, "tipo": "billete" },
+    { "denominacion": 50, "cantidad": 0, "tipo": "billete" },
+    { "denominacion": 20, "cantidad": 0, "tipo": "billete" },
+    { "denominacion": 10, "cantidad": 0, "tipo": "moneda" },
+    { "denominacion": 5, "cantidad": 0, "tipo": "moneda" },
+    { "denominacion": 2, "cantidad": 0, "tipo": "moneda" },
+    { "denominacion": 1, "cantidad": 0, "tipo": "moneda" },
+    { "denominacion": 0.5, "cantidad": 0, "tipo": "moneda" }
   ];
 
-  montoDisponible = 12550;
+  montoDisponible = 2000;
+
   async retirar()
   {
 
@@ -186,16 +189,31 @@ export class CajeroComponent
       if (this.montoDisponible >= cantidadRetirar)
       {
         const mensaje = this.checarDenominaciones(cantidadRetirar);
+        console.log("impriminedo mensaje saliente");
 
-        const datosBack = await post(mensaje);
-        this.montoDisponible = this.montoDisponible - cantidadRetirar;
+        console.log(mensaje);
 
-        this.numOperacion += String(datosBack.numeroOperacion);
-        this.successMessage = "Retire su dinero por favor";
-        this.retiroMessage = " ";
-        this.denominationsMessage = mensaje;
-        this.btnContinuar = true;
-        this.btnTerminar = true;
+        if (mensaje != "")
+        {
+          const datosBack = await post(mensaje);
+          this.montoDisponible = this.montoDisponible - cantidadRetirar;
+
+          this.numOperacion += String(datosBack.numeroOperacion);
+          this.successMessage = "Retire su dinero por favor";
+          this.retiroMessage = " ";
+          this.denominationsMessage = mensaje;
+          this.btnContinuar = true;
+          this.btnTerminar = true;
+        }
+        else
+        {
+          this.errorMessage = "No hay denominaciones suficientes, ingrese un monto diferente";
+          setTimeout(() =>
+          {
+            this.errorMessage = " ";
+          }, 2000);
+
+        }
       }
       else
       {
@@ -209,12 +227,13 @@ export class CajeroComponent
 
   }
 
+
   checarDenominaciones(cantidaRetiro: number): string
   {
     const denominaciones = [];
     // console.log("comenzando a retirar");
     // console.log(cantidaRetiro);
-
+    let retiroTemp = 0;
     for (const denomicacion in this.dinero_inicial)
     {
       if (Object.prototype.hasOwnProperty.call(this.dinero_inicial, denomicacion))
@@ -228,18 +247,24 @@ export class CajeroComponent
           f++;
           element.cantidad = element.cantidad - 1;
           cantidaRetiro = cantidaRetiro - element.denominacion;
+          retiroTemp += element.cantidad;
           // console.log(cantidaRetiro);
         }
         const agregar =
         {
           denomicacion: element.denominacion,
-          tipo: element.tipo, cantidad: f
+          tipo: element.tipo,
+          cantidad: f
         };
         if (f != 0)
         {
           denominaciones.push(agregar);
         }
       }
+    }
+    if (cantidaRetiro > retiroTemp)
+    {
+      return "";
     }
     // console.log(denominaciones);
     // console.log(typeof (denominaciones));
